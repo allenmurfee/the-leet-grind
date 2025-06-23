@@ -42,11 +42,12 @@ export function AddProblemModal({ open, onClose, onAdd }: AddProblemModalProps) 
       if (slug) {
         const title = formatProblemTitle(slug);
         form.setValue('title', title);
-        setShowManualFields(false);
+        setShowManualFields(true);
       }
-    } else if (url) {
-      setShowManualFields(true);
-    } else {
+    // } else if (url) {
+    //   setShowManualFields(true);
+    // } 
+      else {
       setShowManualFields(false);
     }
   };
