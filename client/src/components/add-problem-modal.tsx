@@ -44,11 +44,11 @@ export function AddProblemModal({ open, onClose, onAdd }: AddProblemModalProps) 
         form.setValue('title', title);
         setShowManualFields(true);
       }
-    // } else if (url) {
-    //   setShowManualFields(true);
-    // } 
-      else {
+    } else if (url) {
+      setShowManualFields(true);
+    } else {
       setShowManualFields(false);
+      form.reset();
     }
   };
 
@@ -62,15 +62,12 @@ export function AddProblemModal({ open, onClose, onAdd }: AddProblemModalProps) 
       return;
     }
 
-    const slug = extractProblemSlug(data.url);
-    const title = data.title || (slug ? formatProblemTitle(slug) : 'Unknown Problem');
-
     const problem: LeetCodeProblem = {
       id: generateProblemId(),
-      title,
+      title: data.title,
       url: data.url,
-      difficulty: data.difficulty || 'easy',
-      tags: data.tags || [],
+      difficulty: data.difficulty,
+      tags: data.tags,
       category: data.category,
       dateAdded: new Date().toISOString(),
     };
@@ -78,6 +75,12 @@ export function AddProblemModal({ open, onClose, onAdd }: AddProblemModalProps) 
     onAdd(problem);
     form.reset();
     setShowManualFields(false);
+    onClose();
+
+    toast({
+      title: "Problem added!",
+      description: `${problem.title} has been added to your list.`,
+    });
   };
 
   const handleClose = () => {
@@ -88,41 +91,35 @@ export function AddProblemModal({ open, onClose, onAdd }: AddProblemModalProps) 
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>Add LeetCode Problem</DialogTitle>
+          <DialogTitle>Add New Problem</DialogTitle>
         </DialogHeader>
-
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            {/* URL Input */}
             <FormField
               control={form.control}
               name="url"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>LeetCode Problem URL</FormLabel>
+                  <FormLabel>LeetCode URL</FormLabel>
                   <FormControl>
                     <Input
-                      {...field}
                       placeholder="https://leetcode.com/problems/two-sum/"
+                      {...field}
                       onChange={(e) => {
                         field.onChange(e);
                         handleUrlChange(e.target.value);
                       }}
                     />
                   </FormControl>
-                  <p className="text-xs text-gray-500">
-                    Paste the LeetCode problem URL to auto-fetch details
-                  </p>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            {/* Manual Details */}
             {showManualFields && (
-              <div className="space-y-3">
+              <>
                 <FormField
                   control={form.control}
                   name="title"
@@ -130,7 +127,7 @@ export function AddProblemModal({ open, onClose, onAdd }: AddProblemModalProps) 
                     <FormItem>
                       <FormLabel>Problem Title</FormLabel>
                       <FormControl>
-                        <Input {...field} />
+                        <Input placeholder="Two Sum" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -146,7 +143,7 @@ export function AddProblemModal({ open, onClose, onAdd }: AddProblemModalProps) 
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue />
+                            <SelectValue placeholder="Select difficulty" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -160,11 +157,34 @@ export function AddProblemModal({ open, onClose, onAdd }: AddProblemModalProps) 
                   )}
                 />
 
+                <FormField
+                  control={form.control}
+                  name="category"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Category</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select category" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="todo">To Do</SelectItem>
+                          <SelectItem value="practice">Practice More</SelectItem>
+                          <SelectItem value="completed">Completed</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
                 <div className="space-y-2">
-                  <Label htmlFor="tags">Tags</Label>
+                  <Label htmlFor="tags">Tags (comma-separated)</Label>
                   <Input
                     id="tags"
-                    placeholder="Array, Hash Table, Two Pointers"
+                    placeholder="array, hash-table, two-pointers"
                     onChange={(e) => {
                       const tags = e.target.value
                         .split(',')
@@ -173,37 +193,11 @@ export function AddProblemModal({ open, onClose, onAdd }: AddProblemModalProps) 
                       form.setValue('tags', tags);
                     }}
                   />
-                  <p className="text-xs text-gray-500">Separate tags with commas</p>
                 </div>
-              </div>
+              </>
             )}
 
-            {/* Category Selection */}
-            <FormField
-              control={form.control}
-              name="category"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Category</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="todo">To Do</SelectItem>
-                      <SelectItem value="practice">Practice More</SelectItem>
-                      <SelectItem value="completed">Completed</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Action Buttons */}
-            <div className="flex justify-end space-x-3 pt-4">
+            <div className="flex justify-end space-x-2">
               <Button type="button" variant="outline" onClick={handleClose}>
                 Cancel
               </Button>
