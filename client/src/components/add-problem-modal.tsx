@@ -1,16 +1,39 @@
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { addProblemSchema, type AddProblemInput } from '@shared/schema';
-import { LeetCodeProblem } from '@/types';
-import { validateLeetCodeUrl, extractProblemSlug, formatProblemTitle, generateProblemId } from '@/lib/leetcode';
-import { useToast } from '@/hooks/use-toast';
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { addProblemSchema, type AddProblemInput } from "@shared/schema";
+import { LeetCodeProblem } from "@/types";
+import {
+  validateLeetCodeUrl,
+  extractProblemSlug,
+  formatProblemTitle,
+  generateProblemId,
+} from "@/lib/leetcode";
+import { useToast } from "@/hooks/use-toast";
 
 interface AddProblemModalProps {
   open: boolean;
@@ -18,37 +41,40 @@ interface AddProblemModalProps {
   onAdd: (problem: LeetCodeProblem) => void;
 }
 
-export function AddProblemModal({ open, onClose, onAdd }: AddProblemModalProps) {
+export function AddProblemModal({
+  open,
+  onClose,
+  onAdd,
+}: AddProblemModalProps) {
   const [showManualFields, setShowManualFields] = useState(false);
   const { toast } = useToast();
 
   const form = useForm<AddProblemInput>({
     resolver: zodResolver(addProblemSchema),
     defaultValues: {
-      url: '',
-      category: 'todo',
-      title: '',
-      difficulty: 'easy',
+      url: "",
+      category: "todo",
+      title: "",
+      difficulty: "easy",
       tags: [],
     },
   });
 
   const handleUrlChange = (url: string) => {
-    form.setValue('url', url);
-    
+    form.setValue("url", url);
+
     if (url && validateLeetCodeUrl(url)) {
       // Auto-fill title from URL slug
       const slug = extractProblemSlug(url);
       if (slug) {
         const title = formatProblemTitle(slug);
-        form.setValue('title', title);
+        form.setValue("title", title);
         setShowManualFields(true);
       }
     } else if (url) {
       setShowManualFields(true);
     } else {
       setShowManualFields(false);
-      form.reset();
     }
   };
 
@@ -62,12 +88,16 @@ export function AddProblemModal({ open, onClose, onAdd }: AddProblemModalProps) 
       return;
     }
 
+    const slug = extractProblemSlug(data.url);
+    const title =
+      data.title || (slug ? formatProblemTitle(slug) : "Unknown Problem");
+
     const problem: LeetCodeProblem = {
       id: generateProblemId(),
-      title: data.title,
+      title,
       url: data.url,
-      difficulty: data.difficulty,
-      tags: data.tags,
+      difficulty: data.difficulty || "easy",
+      tags: data.tags || [],
       category: data.category,
       dateAdded: new Date().toISOString(),
     };
@@ -75,12 +105,6 @@ export function AddProblemModal({ open, onClose, onAdd }: AddProblemModalProps) 
     onAdd(problem);
     form.reset();
     setShowManualFields(false);
-    onClose();
-
-    toast({
-      title: "Problem added!",
-      description: `${problem.title} has been added to your list.`,
-    });
   };
 
   const handleClose = () => {
@@ -91,35 +115,41 @@ export function AddProblemModal({ open, onClose, onAdd }: AddProblemModalProps) 
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Add New Problem</DialogTitle>
+          <DialogTitle>Add LeetCode Problem</DialogTitle>
         </DialogHeader>
+
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            {/* URL Input */}
             <FormField
               control={form.control}
               name="url"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>LeetCode URL</FormLabel>
+                  <FormLabel>LeetCode Problem URL</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="https://leetcode.com/problems/two-sum/"
                       {...field}
+                      placeholder="https://leetcode.com/problems/two-sum/"
                       onChange={(e) => {
                         field.onChange(e);
                         handleUrlChange(e.target.value);
                       }}
                     />
                   </FormControl>
+                  <p className="text-xs text-gray-500">
+                    Paste the LeetCode problem URL to auto-fetch details
+                  </p>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
             {showManualFields && (
-              <>
+              <div className="space-y-3">
+                {/* Title Field */}
                 <FormField
                   control={form.control}
                   name="title"
@@ -127,23 +157,27 @@ export function AddProblemModal({ open, onClose, onAdd }: AddProblemModalProps) 
                     <FormItem>
                       <FormLabel>Problem Title</FormLabel>
                       <FormControl>
-                        <Input placeholder="Two Sum" {...field} />
+                        <Input {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
 
+                {/* Difficulty Select */}
                 <FormField
                   control={form.control}
                   name="difficulty"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Difficulty</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select difficulty" />
+                            <SelectValue />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -157,21 +191,46 @@ export function AddProblemModal({ open, onClose, onAdd }: AddProblemModalProps) 
                   )}
                 />
 
+                {/* Tags Field */}
+                <div className="space-y-2">
+                  <Label htmlFor="tags">Tags</Label>
+                  <Input
+                    id="tags"
+                    placeholder="Array, Hash Table, Two Pointers"
+                    onChange={(e) => {
+                      const tags = e.target.value
+                        .split(",")
+                        .map((tag) => tag.trim())
+                        .filter((tag) => tag.length > 0);
+                      form.setValue("tags", tags);
+                    }}
+                  />
+                  <p className="text-xs text-gray-500">
+                    Separate tags with commas
+                  </p>
+                </div>
+
+                {/* Category Select - moved inside conditional */}
                 <FormField
                   control={form.control}
                   name="category"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Category</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select category" />
+                            <SelectValue />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
                           <SelectItem value="todo">To Do</SelectItem>
-                          <SelectItem value="practice">Practice More</SelectItem>
+                          <SelectItem value="practice">
+                            Practice More
+                          </SelectItem>
                           <SelectItem value="completed">Completed</SelectItem>
                         </SelectContent>
                       </Select>
@@ -179,25 +238,11 @@ export function AddProblemModal({ open, onClose, onAdd }: AddProblemModalProps) 
                     </FormItem>
                   )}
                 />
-
-                <div className="space-y-2">
-                  <Label htmlFor="tags">Tags (comma-separated)</Label>
-                  <Input
-                    id="tags"
-                    placeholder="array, hash-table, two-pointers"
-                    onChange={(e) => {
-                      const tags = e.target.value
-                        .split(',')
-                        .map(tag => tag.trim())
-                        .filter(tag => tag.length > 0);
-                      form.setValue('tags', tags);
-                    }}
-                  />
-                </div>
-              </>
+              </div>
             )}
 
-            <div className="flex justify-end space-x-2">
+            {/* Action Buttons */}
+            <div className="flex justify-end space-x-3 pt-4">
               <Button type="button" variant="outline" onClick={handleClose}>
                 Cancel
               </Button>

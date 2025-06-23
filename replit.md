@@ -1,8 +1,10 @@
-# The Leet Grind - LeetCode Progress Tracker
+# The Leet Grind: A Leetcode Progress Tracker
+
+![The Leet Grind](./client/public/leetgrind.png)
 
 ## Overview
 
-The Leet Grind is a LeetCode problem tracking application that helps users organize and monitor their coding practice progress. The application allows users to add LeetCode problems, categorize them (To Do, Practice More, Completed), and track their overall progress with visual statistics.
+Welcome to the grind! The Leet Grind is a LeetCode problem tracking application that helps users organize and monitor their coding practice progress. The application allows users to add LeetCode problems, categorize them (To Do, Practice More, Completed), and track their overall progress with visual statistics.
 
 The application is built as a full-stack web application with a React frontend and Express.js backend, designed to run on Replit with PostgreSQL database support.
 
@@ -18,28 +20,10 @@ The application is built as a full-stack web application with a React frontend a
 
 ### Backend Architecture
 - **Framework**: Express.js with TypeScript
-- **Database**: PostgreSQL with Drizzle ORM
-- **Database Provider**: Neon Database (serverless PostgreSQL)
+- **Database**: PostgreSQL with Drizzle ORM (In Progress)
 - **Session Management**: Express sessions with PostgreSQL store
 - **Validation**: Zod for runtime type validation
 - **Development**: TSX for TypeScript execution in development
-
-### Database Design
-The application uses a simple but effective schema:
-
-**Users Table**:
-- `id` (serial primary key)
-- `username` (unique text)
-- `password` (text)
-
-**Problems Table**:
-- `id` (serial primary key)
-- `title` (text)
-- `url` (unique text) - LeetCode problem URL
-- `difficulty` (text enum: easy/medium/hard)
-- `tags` (text array)
-- `category` (text enum: todo/practice/completed)
-- `dateAdded` (text)
 
 ## Key Components
 
@@ -52,7 +36,6 @@ The storage interface (`IStorage`) allows switching between storage backends wit
 
 ### Problem Management
 - **URL Validation**: Strict validation for LeetCode problem URLs
-- **Auto-completion**: Automatic title generation from URL slugs
 - **Category System**: Three-tier categorization (To Do, Practice More, Completed)
 - **Progress Tracking**: Real-time statistics and progress visualization
 
@@ -107,16 +90,6 @@ The storage interface (`IStorage`) allows switching between storage backends wit
 - Drizzle migrations handle schema updates
 - Environment variable `DATABASE_URL` required for database connection
 
-## Changelog
+## Planned Features
 
-Changelog:
-- June 23, 2025. Initial setup - Complete LeetCode progress tracker application built
-  - React TypeScript frontend with local storage persistence
-  - Express backend template ready for database integration
-  - Three-category system (To Do, Practice More, Completed)
-  - Progress statistics, search/filter, export/import functionality
-
-## User Preferences
-
-Preferred communication style: Simple, everyday language.
-Prefers manual control over application execution rather than automated workflow management.
+1. **Live Database**: I am planning to create a PostgreSQL database in the future. This will allow users to create an account and save their Leet Grind progress. For now, it saves in local storage.
