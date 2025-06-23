@@ -54,7 +54,12 @@ export class MemStorage implements IStorage {
 
   async createProblem(insertProblem: InsertProblem): Promise<Problem> {
     const id = this.currentProblemId++;
-    const problem: Problem = { ...insertProblem, id };
+    const problem: Problem = { 
+      ...insertProblem, 
+      id,
+      category: insertProblem.category || 'todo',
+      tags: insertProblem.tags || []
+    };
     this.problems.set(id, problem);
     return problem;
   }

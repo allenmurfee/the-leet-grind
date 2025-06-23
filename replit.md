@@ -110,8 +110,13 @@ The storage interface (`IStorage`) allows switching between storage backends wit
 ## Changelog
 
 Changelog:
-- June 23, 2025. Initial setup
+- June 23, 2025. Initial setup - Complete LeetCode progress tracker application built
+  - React TypeScript frontend with local storage persistence
+  - Express backend template ready for database integration
+  - Three-category system (To Do, Practice More, Completed)
+  - Progress statistics, search/filter, export/import functionality
 
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
+Prefers manual control over application execution rather than automated workflow management.
