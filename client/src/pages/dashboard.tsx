@@ -216,7 +216,7 @@ export default function Dashboard() {
             </Button>
 
             {/* Search and Add Problem */}
-            <div className="flex items-center space-x-4 flex-1 max-w-2xl mx-auto">
+            <div className="flex justify-between items-center space-x-4 flex-1 max-w-2xl">
               {/* Search */}
               <div className="flex-1 relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
