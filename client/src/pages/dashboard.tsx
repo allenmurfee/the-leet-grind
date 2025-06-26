@@ -200,7 +200,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex h-screen bg-gray-50 font-inter">
+    <div className="flex h-screen bg-secondary dark:bg-secondary font-inter">
       {/* Sidebar */}
       <Sidebar
         stats={stats}
@@ -213,7 +213,7 @@ export default function Dashboard() {
       {/* Main Content */}
       <div className="lg:pl-80 flex flex-col flex-1">
         {/* Top Header */}
-        <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-4 py-4 sm:px-6">
+        <div className="sticky top-0 z-10 bg-background dark:bg-background border-b border-gray-200 px-4 py-4 sm:px-6">
           <div className="flex items-center justify-between">
             {/* Mobile menu button */}
             <Button
@@ -318,7 +318,7 @@ export default function Dashboard() {
             ({ category, problems: categoryProblems }) => (
               <div key={category} className="mb-8">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold text-gray-900 flex items-center">
+                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
                     <div
                       className={`w-3 h-3 rounded-full mr-3 ${
                         category === "todo"
@@ -336,7 +336,7 @@ export default function Dashboard() {
                 </div>
 
                 {categoryProblems.length === 0 ? (
-                  <div className="text-center py-8 text-gray-500">
+                  <div className="text-center py-8 text-gray-500 dark:text-white">
                     <p>No problems in this category yet.</p>
                     {category === "todo" && problems.length === 0 && (
                       <p className="mt-2">

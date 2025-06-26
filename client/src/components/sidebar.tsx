@@ -35,7 +35,7 @@ export function Sidebar({
       {/* Sidebar */}
       <div
         className={cn(
-          "fixed inset-y-0 left-0 z-50 w-80 bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out lg:translate-x-0",
+          "fixed inset-y-0 left-0 z-50 w-80 bg-background dark:bg-background border-r border-gray-200 transform transition-transform duration-300 ease-in-out lg:translate-x-0",
           isOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
@@ -59,17 +59,17 @@ export function Sidebar({
                 <Swords className="h-5 w-5 text-white" />
               </div>
               <div className="ml-3">
-                <h1 className="text-xl font-bold text-gray-900">
+                <h1 className="text-xl font-bold text-gray-900 dark:text-white">
                   The Leet Grind
                 </h1>
-                <p className="text-xs text-gray-500">Welcome to the GRIND!</p>
+                <p className="text-xs text-gray-500 dark:text-muted-foreground">Welcome to the GRIND!</p>
               </div>
             </div>
           </div>
 
           {/* Statistics Dashboard */}
           <div className="mt-8 px-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               Here's Your Progress:
             </h2>
 
@@ -97,7 +97,7 @@ export function Sidebar({
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
                   <div className="w-3 h-3 bg-gray-400 rounded-full mr-3" />
-                  <span className="text-sm text-gray-600">To Do</span>
+                  <span className="text-sm text-gray-600 dark:text-muted-foreground">To Do</span>
                 </div>
                 <span className="text-sm font-medium text-gray-900">
                   {stats.todo}
@@ -106,7 +106,7 @@ export function Sidebar({
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
                   <div className="w-3 h-3 bg-amber-400 rounded-full mr-3" />
-                  <span className="text-sm text-gray-600">Practice More</span>
+                  <span className="text-sm text-gray-600 dark:text-muted-foreground">Practice More</span>
                 </div>
                 <span className="text-sm font-medium text-gray-900">
                   {stats.practice}
@@ -115,7 +115,7 @@ export function Sidebar({
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
                   <div className="w-3 h-3 bg-emerald-400 rounded-full mr-3" />
-                  <span className="text-sm text-gray-600">Completed</span>
+                  <span className="text-sm text-gray-600 dark:text-muted-foreground">Completed</span>
                 </div>
                 <span className="text-sm font-medium text-gray-900">
                   {stats.completed}
@@ -126,14 +126,14 @@ export function Sidebar({
 
           {/* Difficulty Breakdown */}
           <div className="mt-8 px-6">
-            <h3 className="text-sm font-semibold text-gray-900 mb-3">
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
               By Difficulty
             </h3>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
                   <div className="w-2 h-2 bg-green-400 rounded-full mr-2" />
-                  <span className="text-xs text-gray-600">Easy</span>
+                  <span className="text-xs text-gray-600 dark:text-muted-foreground">Easy</span>
                 </div>
                 <span className="text-xs font-medium text-gray-900">
                   {stats.easy}
@@ -142,7 +142,7 @@ export function Sidebar({
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
                   <div className="w-2 h-2 bg-yellow-400 rounded-full mr-2" />
-                  <span className="text-xs text-gray-600">Medium</span>
+                  <span className="text-xs text-gray-600 dark:text-muted-foreground">Medium</span>
                 </div>
                 <span className="text-xs font-medium text-gray-900">
                   {stats.medium}
@@ -151,7 +151,7 @@ export function Sidebar({
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
                   <div className="w-2 h-2 bg-red-400 rounded-full mr-2" />
-                  <span className="text-xs text-gray-600">Hard</span>
+                  <span className="text-xs text-gray-600 dark:text-muted-foreground">Hard</span>
                 </div>
                 <span className="text-xs font-medium text-gray-900">
                   {stats.hard}

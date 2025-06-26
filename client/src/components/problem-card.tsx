@@ -27,12 +27,12 @@ export function ProblemCard({ problem, onUpdate, onDelete }: ProblemCardProps) {
 
   return (
     <div className={cn(
-      "bg-white rounded-lg border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all duration-200 p-4",
+      "bg-background dark:bg-background rounded-lg border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all duration-200 p-4",
       isCompleted && "opacity-75"
     )}>
       <div className="flex items-start justify-between mb-3">
         <div className="flex-1 min-w-0">
-          <h3 className="font-medium text-gray-900 text-sm mb-1 line-clamp-2 flex items-center">
+          <h3 className="font-medium text-gray-900 dark:text-white text-sm mb-1 line-clamp-2 flex items-center">
             {isCompleted && <Check className="h-3 w-3 text-emerald-500 mr-2 flex-shrink-0" />}
             {problem.title}
           </h3>
@@ -62,7 +62,7 @@ export function ProblemCard({ problem, onUpdate, onDelete }: ProblemCardProps) {
       {problem.tags.length > 0 && (
         <div className="flex flex-wrap gap-1 mb-3">
           {problem.tags.slice(0, 3).map((tag) => (
-            <Badge key={tag} variant="outline" className="text-xs bg-gray-100 text-gray-700 border-0">
+            <Badge key={tag} variant="outline" className="text-xs bg-gray-100 dark:bg-muted text-gray-700 dark:text-white border-0">
               {tag}
             </Badge>
           ))}
