@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Plus, Search, Filter, Menu } from "lucide-react";
+import { Plus, Search, Filter, Menu, Sun, Moon } from "lucide-react";
 import { AddProblemModal } from "@/components/add-problem-modal";
 import { ProblemCard } from "@/components/problem-card";
 import { Sidebar } from "@/components/sidebar";
@@ -20,6 +20,7 @@ export default function Dashboard() {
   const [problems, setProblems] = useState<LeetCodeProblem[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [difficultyFilter, setDifficultyFilter] = useState("all");
@@ -176,6 +177,15 @@ export default function Dashboard() {
     setDifficultyFilter("all");
   };
 
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+    if (darkMode) {
+      document.documentElement.classList.remove("dark");
+    } else {
+      document.documentElement.classList.add("dark");
+    }
+  };
+
   const getCategoryDisplayName = (category: string) => {
     switch (category) {
       case "todo":
@@ -248,6 +258,15 @@ export default function Dashboard() {
               onClick={() => setShowFilters(!showFilters)}
             >
               <Filter className="h-5 w-5" />
+            </Button>
+
+            {/* Dark Mode Button */}
+            <Button variant="ghost" size="sm" onClick={toggleDarkMode}>
+              {darkMode ? (
+                <Sun className="h-5 w-5" />
+              ) : (
+                <Moon className="h-5 w-5" />
+              )}
             </Button>
           </div>
 
