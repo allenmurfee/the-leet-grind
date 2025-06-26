@@ -227,6 +227,15 @@ export default function Dashboard() {
 
             {/* Search and Add Problem */}
             <div className="flex justify-between items-center space-x-4 flex-1 max-w-2xl">
+              {/* Filter Button */}
+              <Button
+                variant="ghost"
+                size="sm"
+                className="mr-max"
+                onClick={() => setShowFilters(!showFilters)}
+              >
+                <Filter className="h-5 w-5" />
+              </Button>
               {/* Search */}
               <div className="flex-1 relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -250,15 +259,6 @@ export default function Dashboard() {
                 Add Problem
               </Button>
             </div>
-
-            {/* Filter Button */}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setShowFilters(!showFilters)}
-            >
-              <Filter className="h-5 w-5" />
-            </Button>
 
             {/* Dark Mode Button */}
             <Button variant="ghost" size="sm" onClick={toggleDarkMode}>
